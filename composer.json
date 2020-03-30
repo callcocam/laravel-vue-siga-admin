@@ -12,6 +12,7 @@
     "require": {
         "laravel/framework": "^7.0",
         "doctrine/dbal": "^2.10",
+        "laravel/ui": "^2.0",
         "lucascudo/laravel-pt-br-localization": "dev-master"
     },
     "authors": [

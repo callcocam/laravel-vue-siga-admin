@@ -49,5 +49,9 @@ class SigaServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/assets' => public_path('vendor'),
         ], 'public');
+        $this->publishes([
+            __DIR__.'/webpack.mix.js' => base_path('webpack.mix.js'),
+            __DIR__.'/package.json' => base_path('package.json'),
+        ]);
     }
 }
