@@ -42,11 +42,9 @@ class SigaServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/config/siga.php' => config_path('siga.php'),
         ]);
+
         $this->publishes([
-            __DIR__.'/resources/views' => base_path('resources/views'),
-        ]);
-        $this->publishes([
-            __DIR__.'/resources/js' => base_path('resources/js'),
+            __DIR__.'/resources' => resource_path(),
         ]);
         $this->publishes([
             __DIR__.'/assets' => public_path('vendor'),
