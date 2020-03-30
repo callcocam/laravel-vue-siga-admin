@@ -26,7 +26,7 @@
             "src/helper.php"
         ],
         "psr-4": {
-            "SIGA\\": "laravel-vue-siga-admin/callcocam/siga/src"
+            "SIGA\\": "src"
         }
     },
     "extra": {

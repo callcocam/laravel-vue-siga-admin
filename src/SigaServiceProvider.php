@@ -43,7 +43,13 @@ class SigaServiceProvider extends ServiceProvider
             __DIR__.'/config/siga.php' => config_path('siga.php'),
         ]);
         $this->publishes([
-            __DIR__.'/views' => base_path('resources/views/callcocam/siga'),
+            __DIR__.'/resources/views' => base_path('resources/views'),
         ]);
+        $this->publishes([
+            __DIR__.'/resources/js' => base_path('resources/js'),
+        ]);
+        $this->publishes([
+            __DIR__.'/assets' => public_path('vendor'),
+        ], 'public');
     }
 }
