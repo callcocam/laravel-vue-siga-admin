@@ -26,7 +26,6 @@
             "packages/callcocam/siga/src/helper.php"
         ],
         "classmap": [
-            "database",
             "database/seeds",
             "database/factories"
         ],
