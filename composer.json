@@ -1,0 +1,27 @@
+{
+    "name": "callcocam/siga",
+    "description": "admin back end laravel vue js",
+    "require": {
+        "doctrine/dbal": "^4.0@dev",
+        "lucascudo/laravel-pt-br-localization": "dev-master"
+    },
+    "authors": [
+        {
+            "name": "Claudio Campos",
+            "email": "callcocam@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "autoload": {
+        "files": [
+            "packages/callcocam/siga/helper.php"
+        ],
+        "classmap": [
+            "database"
+        ],
+        "psr-4": {
+            "App\\": "app/",
+            "SIGA\\": "packages/callcocam/siga/src"
+        }
+    }
+}
