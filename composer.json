@@ -1,5 +1,5 @@
 {
-    "name": "callcocam/siga",
+    "name": "callcocam/laravel-vue-siga-admin",
     "description": "admin back end laravel vue js",
     "require": {
         "doctrine/dbal": "^4.0@dev",
