@@ -23,7 +23,7 @@
     "minimum-stability": "dev",
     "autoload": {
         "files": [
-            "laravel-vue-siga-admin/callcocam/siga/src/helper.php"
+            "src/helper.php"
         ],
         "psr-4": {
             "SIGA\\": "laravel-vue-siga-admin/callcocam/siga/src"
