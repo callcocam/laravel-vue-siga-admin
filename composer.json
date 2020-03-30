@@ -1,6 +1,14 @@
 {
     "name": "callcocam/laravel-vue-siga-admin",
     "description": "admin back end laravel vue js",
+    "type": "project",
+    "keywords": [
+        "admin",
+        "vue",
+        "framework",
+        "laravel"
+    ],
+    "license": "MIT",
     "require": {
         "doctrine/dbal": "^4.0@dev",
         "lucascudo/laravel-pt-br-localization": "dev-master"
