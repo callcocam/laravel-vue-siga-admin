@@ -9,6 +9,6 @@ if (!function_exists('siga_path')){
 
     function siga_path($path=""){
 
-        return sprintf("%s/callcocam/siga/src/%s",__DIR__, $path);
+        return sprintf("%s/%s",__DIR__, $path);
     }
 }
