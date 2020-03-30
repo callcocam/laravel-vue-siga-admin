@@ -25,12 +25,7 @@
         "files": [
             "packages/callcocam/siga/src/helper.php"
         ],
-        "classmap": [
-            "database/seeds",
-            "database/factories"
-        ],
         "psr-4": {
-            "App\\": "app/",
             "SIGA\\": "packages/callcocam/siga/src"
         }
     },
