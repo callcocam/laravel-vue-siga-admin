@@ -29,6 +29,9 @@ class SigaServiceProvider extends ServiceProvider
 
         $this->loadViewsFrom(siga_path('resources/views'),'siga');
 
+        $this->publishes([
+            __DIR__.'/views' => base_path('resources/views/wisdmlabs/todolist'),
+        ]);
 
     }
     /**
