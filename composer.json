@@ -23,7 +23,7 @@
     "minimum-stability": "dev",
     "autoload": {
         "files": [
-            "callcocam/siga/src/helper.php"
+            "/callcocam/siga/src/helper.php"
         ],
         "psr-4": {
             "SIGA\\": "callcocam/siga/src"

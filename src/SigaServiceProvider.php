@@ -30,9 +30,6 @@ class SigaServiceProvider extends ServiceProvider
 
         $this->loadViewsFrom(siga_path('resources/views/callcocam/siga'),'siga');
 
-        $this->publishes([
-            __DIR__.'/views' => base_path('resources/views/callcocam/siga'),
-        ]);
 
     }
     /**
@@ -42,6 +39,11 @@ class SigaServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-
+        $this->publishes([
+            __DIR__.'/config/siga.php' => config_path('siga.php'),
+        ]);
+        $this->publishes([
+            __DIR__.'/views' => base_path('resources/views/callcocam/siga'),
+        ]);
     }
 }
