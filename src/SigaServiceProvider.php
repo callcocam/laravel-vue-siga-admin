@@ -49,6 +49,25 @@ class SigaServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/assets' => public_path('vendor'),
         ], 'public');
+
+        $this->publishes([
+            __DIR__.'/database/migrations/' => database_path('migrations')
+        ], 'migrations');
+
+
+        $this->publishes([
+            __DIR__.'/database/seeds/' => database_path('migrations/seeds')
+        ], 'seeds');
+
+        $this->publishes([
+            __DIR__.'/database/factories/' => database_path('migrations/factories')
+        ], 'factories');
+
+
+        $this->publishes([
+            __DIR__.'/database/migrations/' => database_path('migrations')
+        ], 'migrations');
+
         $this->publishes([
             __DIR__.'/webpack.mix.js' => base_path('webpack.mix.js'),
             __DIR__.'/package.json' => base_path('package.json'),
