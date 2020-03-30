@@ -20,6 +20,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
+<h1>Callcocam SIGA</h1>
     <div id="app">
        Aguarde...
     </div>

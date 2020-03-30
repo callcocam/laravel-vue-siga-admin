@@ -4,9 +4,11 @@
  * User: callcocam@gmail.com, contato@sigasmart.com.br
  * https://www.sigasmart.com.br
  */
-namespace SIGA\Providers;
+namespace SIGA;
 
 use Illuminate\Support\ServiceProvider;
+use SIGA\Providers\MacrosServiceProvider;
+use SIGA\Providers\SigaRouteServiceProvider;
 
 class SigaServiceProvider extends ServiceProvider
 {
@@ -17,7 +19,6 @@ class SigaServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        include dirname(__DIR__,2)."/helper.php";
 
         $this->app->register(MacrosServiceProvider::class);
 
@@ -27,10 +28,10 @@ class SigaServiceProvider extends ServiceProvider
 
         $this->loadMigrationsFrom(siga_path('database/migrations'));
 
-        $this->loadViewsFrom(siga_path('resources/views'),'siga');
+        $this->loadViewsFrom(siga_path('resources/views/callcocam/siga'),'siga');
 
         $this->publishes([
-            __DIR__.'/views' => base_path('resources/views/wisdmlabs/todolist'),
+            __DIR__.'/views' => base_path('resources/views/callcocam/siga'),
         ]);
 
     }

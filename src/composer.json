@@ -22,7 +22,7 @@
     "minimum-stability": "dev",
     "autoload": {
         "files": [
-            "packages/callcocam/siga/helper.php"
+            "packages/callcocam/siga/src/helper.php"
         ],
         "classmap": [
             "database"
