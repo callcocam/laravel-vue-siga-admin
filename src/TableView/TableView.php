@@ -25,6 +25,7 @@ class TableView
         'subtitle'=>'Base Table Description',
         'redirect'=>[],
     ] ;
+    protected $table;
     protected $classes = 'table';
     protected $paginator = null;
     protected $appendsQueries = false;
@@ -46,6 +47,9 @@ class TableView
 
         if ($data instanceof Builder) {
             $this->builder = $data;
+
+            $this->table = $this->builder->getModel()->getTable();
+
         }
     }
 
@@ -84,36 +88,38 @@ class TableView
                 $this->collection->count(),
                 $perPage, $page, $options);
         } else {
-            $this->paginator = $this->builder->paginate($perPage, ['*'], 'page', $page);
+            $this->paginator = $this->builder->paginate($perPage, $this->alias(), 'page', $page);
         }
 
         return $this;
     }
 
+    private function alias(){
+
+        $alias=['*'];
+        foreach ($this->columns() as $column) {
+           $alias[] = $column->alias;
+        }
+        return $alias;
+    }
+
     private function applySearchFilter()
     {
-        if (count($this->searchableFields()) && ! empty($this->searchQuery())) {
-            if ($this->collection) {
-                $this->collection = $this->collection->filter(function ($data) {
-                    foreach ($this->searchableFields() as $field) {
-                        if (Str::contains(strtolower($data->{$field}), strtolower($this->searchQuery()))) {
-                            return true;
-                        }
-                    }
+        $this->builder->select($this->alias());
 
-                    return false;
-                });
-            }
+        if (count($this->searchableFields()) && ! empty($this->searchQuery())) {
 
             if ($this->builder) {
                 $keyword = strtolower($this->searchQuery());
-
-                $this->builder->where(function ($query) use ($keyword) {
+                $this->builder->where(function (Builder $query) use ($keyword) {
                     foreach ($this->searchableFields() as $field) {
-                        $query->orWhere($field, 'LIKE', "%$keyword%");
+                        $query
+                            ->orWhere($field, 'LIKE', "%$keyword%");
                     }
                 });
             }
+
+            //dd($this->builder->toSql());
         }
     }
 
@@ -170,58 +176,41 @@ class TableView
         return $this->builder->get();
     }
 
-    public function hasPagination()
+    /**
+     * @param array $forgings
+     * @return TableView
+     */
+    public function forgings(array $forgings): TableView
     {
-        return (bool) $this->paginator;
-    }
 
-    public function columns()
-    {
-        return $this->columns;
-    }
+        if($forgings){
 
-    public function setTableClass($classes)
-    {
-        $this->classes = $classes;
+            foreach ($forgings as $forging) {
 
-        return $this;
-    }
+                $this->builder->join(
+                    $forging['on'],
+                    sprintf( '%s.%s',$forging['on'],$forging['references']),
+                    '=',
+                    sprintf( '%s.%s',$this->builder->getModel()->getTable(),$forging['field'])
+                );
 
-    public function getTableClass()
-    {
-        return $this->classes;
-    }
+                $this->inner($forging['on']);
 
-    public function getTableRowAttributes($model = null)
-    {
-        if (is_array($this->tableRowAttributes)) {
-            return $this->tableRowAttributes;
+                foreach ($forging['columns'] as $column) {
+
+                    $this->column($column);
+                }
+            }
         }
 
-        $closure = $this->tableRowAttributes;
-
-        return $closure instanceof Closure ? $closure($model) : [];
-    }
-
-    public function setTableRowAttributes($data)
-    {
-        $this->tableRowAttributes = $data ?? [];
+        $this->inner($this->builder->getModel()->getTable());
 
         return $this;
     }
-
-    public function setTableBodyClass($class)
-    {
-        $this->tableBodyClass = $class;
-
-        return $this;
-    }
-
-    public function geTableBodyClass()
-    {
-        return $this->tableBodyClass;
-    }
-
+    /**
+     * @param null $id
+     * @return $this
+     */
     public function render($id = null)
     {
         if (count($this->columns) == 0) {
@@ -236,18 +225,107 @@ class TableView
         return $this;
     }
 
-    public function column($value, $title = null)
+    /**
+     * @return bool
+     */
+    public function hasPagination()
     {
+        return (bool) $this->paginator;
+    }
 
-        if (!is_string($title)) {
-            $title = str_replace('_', ' ', ucfirst($value));
+    /**
+     * @return array
+     */
+    public function columns()
+    {
+        return $this->columns;
+    }
+
+    /**
+     * @param $classes
+     * @return $this
+     */
+    public function setTableClass($classes)
+    {
+        $this->classes = $classes;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTableClass()
+    {
+        return $this->classes;
+    }
+
+    /**
+     * @param null $model
+     * @return array|mixed
+     */
+    public function getTableRowAttributes($model = null)
+    {
+        if (is_array($this->tableRowAttributes)) {
+            return $this->tableRowAttributes;
         }
 
-        $column = new TableViewColumn($title,null, $value);
+        $closure = $this->tableRowAttributes;
 
-        $this->columns[] = $column;
+        return $closure instanceof Closure ? $closure($model) : [];
+    }
 
-        return $column;
+    /**
+     * @param $data
+     * @return $this
+     */
+    public function setTableRowAttributes($data)
+    {
+        $this->tableRowAttributes = $data ?? [];
+
+        return $this;
+    }
+
+    /**
+     * @param $class
+     * @return $this
+     */
+    public function setTableBodyClass($class)
+    {
+        $this->tableBodyClass = $class;
+
+        return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function geTableBodyClass()
+    {
+        return $this->tableBodyClass;
+    }
+
+
+    /**
+     * @param $name
+     * @param null $title
+     * @return $this
+     */
+    public function column($name, $title = null)
+    {
+
+        return $this->closure($name,null, $title);
+    }
+
+    /**
+     * @param $table
+     * @return $this
+     */
+    public function inner($table)
+    {
+        $this->table = $table;
+
+        return $this;
     }
 
     /**
@@ -256,14 +334,14 @@ class TableView
      * @param null $title
      * @return $this
      */
-    public function closure( $value, $callable, $title = null)
+    public function closure( $name, $callable, $title = null)
     {
 
         if (!is_string($title)) {
-            $title = str_replace('_', ' ', ucfirst($value));
+            $title = str_replace('_', ' ', ucfirst($name));
         }
 
-        $column = new TableViewColumn($title, $callable, $value);
+        $column = new TableViewColumn($title, $callable, $name, $this->table);
 
         $this->columns[] = $column;
 
@@ -276,6 +354,8 @@ class TableView
             return $this->macroCall($method, $parameters);
         }
     }
+
+
 
 
 }

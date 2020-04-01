@@ -8,9 +8,8 @@
 namespace SIGA\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class ProfileRequest extends FormRequest
+class RegisterRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -30,14 +29,9 @@ class ProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            'name'=>[
-                'required'
-            ],
-            'email'=>[
-                'required',
-                'email',
-                Rule::unique('users')->ignore($this->id),
-            ],
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
         ];
     }
 }

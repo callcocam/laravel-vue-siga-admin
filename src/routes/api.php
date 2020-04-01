@@ -21,7 +21,7 @@ Route::prefix('v1')
         $router->prefix('admin')->group( function ($router) {
             $router->post('login', 'LoginController')->name('api.admin.login');
             $router->post('register', 'RegisterController@register')->name('api.admin.register');
-            $router->post('refresh', 'RefreshController@refresh')->name('api.admin.refresh');
+            $router->post('refresh', 'RefreshTokenController')->name('api.admin.refresh');
             $router->post('logout', 'LogoutController@logout')->name('api.admin.logout');
             $router->get('me', 'MeController@me')->name('api.admin.me');
             $router->post('profile', 'ProfileController@save')->name('api.admin.profile');

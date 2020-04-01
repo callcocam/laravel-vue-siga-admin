@@ -6,6 +6,7 @@
  */
 namespace SIGA\Tenant;
 
+use Ramsey\Uuid\Uuid;
 use SIGA\Tenant\Exceptions\TenantColumnUnknownException;
 use SIGA\Tenant\Exceptions\TenantNullIdException;
 use Illuminate\Database\Eloquent\Builder;

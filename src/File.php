@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class File extends Model
 {
 
-    use TraitTable, TraitModel;
+    use TraitTable;
 
     public function init($tableView)
     {

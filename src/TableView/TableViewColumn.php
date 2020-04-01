@@ -8,8 +8,10 @@ class TableViewColumn
     protected $closure;
 
     protected $render = [
+        'field'=>'',
         'name'=>'',
         'title'=>'',
+        'alias'=>'',
         'label'=>'',
         'value'=>null,
         'sorter'=>false,
@@ -27,18 +29,22 @@ class TableViewColumn
     ];
 
 
-    public function __construct($title, $callable, $value)
+    public function __construct($title, $callable, $name, $table)
     {
 
         $this->title($title);
 
+        $this->field($name);
+
         $this->label($title);
 
-        $this->name($value);
+        $this->name(sprintf("%s_%s", $table, $name));
+
+        $this->alias(sprintf("%s.%s as %s_%s", $table, $name, $table,$name));
 
         $this->callable($callable);
 
-        $this->attribute('id', $value);
+        $this->attribute('id', $name);
 
         $this->attribute('placeholder', $title);
 
@@ -76,12 +82,34 @@ class TableViewColumn
     }
 
     /**
+     * @param $field
+     * @return $this
+     */
+    public function field($field)
+    {
+        $this->render['field'] = $field;
+
+        return $this;
+    }
+
+     /**
      * @param $name
      * @return $this
      */
     public function name($name)
     {
         $this->render['name'] = $name;
+
+        return $this;
+    }
+
+    /**
+     * @param $alias
+     * @return $this
+     */
+    public function alias($alias)
+    {
+        $this->render['alias'] = $alias;
 
         return $this;
     }

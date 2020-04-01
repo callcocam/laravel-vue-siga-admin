@@ -11,12 +11,63 @@ use Illuminate\Database\Query\Builder;
 
 trait Eloquent
 {
-
-    /**
-     * @var Builder
+    /*
+     *  Builder
      */
-    protected $queryBuilder;
+    protected $source;
 
+    protected $forgingsIgnore=['companies'];
+    protected $forgingsIgnoreColumns=['is_admin','email_verified_at','remember_token','deleted_at','company_id','password'];
+
+
+    public function getSources()
+    {
+        if (!$this->source) {
+            $this->source = $this->query();
+        }
+        return $this->source;
+    }
+
+
+    public function innerJoin(){
+
+        $connection = $this->getSources()->getConnection()->getDoctrineConnection();
+
+        $schema = $connection->getSchemaManager();
+
+        $foreignKeys = $schema->listTableForeignKeys($this->getTable());
+
+        $fields =[];
+
+        if($foreignKeys){
+            foreach ( $foreignKeys as $foreignKey ) {
+                if(!in_array($foreignKey->getForeignTableName(), $this->forgingsIgnore)){
+                    $columns = $schema->listTableColumns( $foreignKey->getForeignTableName() );
+                    $fields[] = [
+                        'name' => $foreignKey->getName(),
+                        'field' => $foreignKey->getLocalColumns()[0],
+                        'references' => $foreignKey->getForeignColumns()[0],
+                        'on' => $foreignKey->getForeignTableName(),
+                        'columns'=>$this->getFields($columns)
+                    ];
+                }
+
+            }
+        }
+        return $fields;
+    }
+
+    protected function getFields($columns)
+    {
+        $fields = array();
+        foreach ($columns as $column) {
+            $name = $column->getName();
+            if(!in_array($name, $this->forgingsIgnoreColumns)) {
+                $fields[$name] = $column->getName();
+            }
+        }
+        return $fields;
+    }
     protected function order($headers)
     {
         $column = $this->getParams()->column;
@@ -26,95 +77,69 @@ trait Eloquent
         }
         $order = $this->getParams()->order;
 
-        $this->queryBuilder->orderBy($column, $order);
+        $this->source->orderBy($column, $order);
     }
 
-    protected function initQuery($headers)
+    protected function initQuery()
     {
-
 
         if ($this->getParams()->status) {
 
-            if ($this->getParams()->status !="all") {
-                $this->queryBuilder->where([$this->getOption(Options::DEFAULT_COLUMN_STATUS) => $this->getParams()->status]);
+            if ($this->params('status') !="all") {
+                $this->source->where([onfig('siga.eloquent.filter.default_date','created_at') => $this->params('status')]);
             }
         }
 
-        if ($this->getParams()->start && $this->getParams()->end) {
-            $this->queryBuilder->whereBetween($this->getOption(Options::DEFAULT_COLUMN_DATE), [
-                date_carbom_format($this->getParams()->start)->format('Y-m-d 00:00:00'),
-                date_carbom_format($this->getParams()->end)->format('Y-m-d 23:59:59')
+        if ($this->params('start') && $this->params('end')) {
+            $this->source->whereBetween(onfig('siga.eloquent.filter.default_date','created_at'), [
+                date_carbom_format($this->params('start'))->format('Y-m-d 00:00:00'),
+                date_carbom_format($this->params('end'))->format('Y-m-d 23:59:59')
             ]);
         }
 
 
         if (request()->has('year'))
-            $this->queryBuilder->whereYear($this->getOption(Options::DEFAULT_COLUMN_DATE), '=', $this->getParams()->year);
+            $this->source->whereYear(config('siga.eloquent.filter.default_date','created_at'), '=', $this->params('year'));
         if (request()->has('month'))
-            $this->queryBuilder->whereMonth($this->getOption(Options::DEFAULT_COLUMN_DATE), '=', $this->getParams()->month);
+            $this->source->whereMonth(config('siga.eloquent.filter.default_date','created_at'), '=', $this->params('month'));
         if (request()->has('day'))
-            $this->queryBuilder->whereDay($this->getOption(Options::DEFAULT_COLUMN_DATE), '=', $this->getParams()->day);
+            $this->source->whereDay(config('siga.eloquent.filter.default_date','created_at'), '=', $this->params('day'));
         if (request()->has('date'))
-            $this->queryBuilder->whereDate($this->getOption(Options::DEFAULT_COLUMN_DATE), '=', $this->getParams()->date);
+            $this->source->whereDate(config('siga.eloquent.filter.default_date','created_at'), '=', $this->params('date'));
         if (request()->has('number'))
-            $this->queryBuilder->where('number', '=', request()->get('number'));
+            $this->source->where('number', '=', request()->get('number'));
 
-        $Searchs = [];
+    }
 
-        if ($headers) :
 
-            foreach ($headers as $values) :
 
-                if (isset($values['filter']) && $values['filter']) :
+    /**
+     * @param $tableView
+     * @return array
+     */
+    protected function data($tableView){
 
-                    $Searchs[] = $values['alias'];
+        $data = [];
 
-                endif;
+        foreach($tableView->data() as $dataModel){
+            $temp=[];
+            foreach($tableView->columns() as $column):
+
+                $column->rowValue($dataModel);
+
+                $temp[$column->propertyName()] = $column->toArray();
 
             endforeach;
 
-        endif;
 
-        $anyKeyword = $this->getParams()->search;
-
-        if ($Searchs && !is_null($anyKeyword)) :
-
-            $Search = implode(",", $Searchs);
-
-            if ($anyKeyword) :
-
-                $this->queryBuilder->where(app('db')->raw("CONCAT_WS(' ', {$Search})"), "like", "%{$anyKeyword}%");
-
+            if($tableView->hasChildDetails()):
+                // dump($this->tableView->getChildDetails($dataModel));
             endif;
 
-        endif;
-    }
+            $data[] = $temp;
+        }
 
-    public function getData($columns = ["*"])
-    {
-
-        if($this->data)
-            return $this->data;
-
-        $headers = $this->getTables()->getHeadersArray();
-
-        $this->queryBuilder = $this->getSources();
-
-        $this->queryBuilder->select($columns);
-
-        $this->order($headers);
-
-        $this->initQuery($headers);
-
-        $this->data = $this->queryBuilder->paginate($this->getParams()->perPage);
-
-//dump($this->queryBuilder->toSql());
-        //Log::debug($this->queryBuilder->toSql());
-        //Log::debug("Params: page -> {$this->getParams()->page}, search -> {$this->getParams()->search}, limit -> {$this->getParams()->limit}, between -> {$this->getParams()->between}, status -> {$this->getParams()->status}");
-        // $resource = $this->tables->getResource();
-
-
-        return $this->data;
+        return $data;
     }
 
 }

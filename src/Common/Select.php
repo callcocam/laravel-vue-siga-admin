@@ -8,15 +8,14 @@
 
 namespace SIGA\Common;
 
+use Illuminate\Database\Eloquent\Builder;
 use SIGA\Company;
+use SIGA\Processors\AvatarProcessor;
 use SIGA\User;
 use SIGA\File;
-use Illuminate\Database\Query\Builder;
 
 trait Select
 {
-
-    protected $source;
 
 
     public function author()
@@ -26,17 +25,25 @@ trait Select
             $user->append('avatar');
             $user->append('created_mm_dd_yyyy');
         }
-
         return $user;
     }
 
 
-    public function user()
+    /**
+     * @return mixed
+     */
+    public function getUserAttribute()
     {
-
-        return $this->belongsTo(User::class);
+        return $this->user();
     }
 
+    /**
+     * @return mixed
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     /**
      * @return File
@@ -46,14 +53,17 @@ trait Select
         return $this->morphMany(File::class, 'fileable');
     }
 
+    /**
+     * @return mixed
+     */
     public function getCompanyNameAttribute()
     {
-        if($this->company()->count())
-           return $this->company()->first()->name;
-
-        return \Auth::user()->company->name;
+        return $this->company_name();
     }
 
+    /**
+     * @return mixed
+     */
     public function company_name()
     {
         if($this->company()->count())
@@ -62,73 +72,48 @@ trait Select
         return \Auth::user()->company->name;
     }
 
+    /**
+     * @return mixed
+     */
+    public function getCompanyAttribute()
+    {
+        return $this->company();
+    }
+
+    /**
+     * @return mixed
+     */
     public function company()
     {
         return $this->belongsTo(Company::class);
     }
 
+
+    public function getLinkAttribute(){
+
+        return [
+            'edit'=>$this->addEdit(),
+            'show'=>$this->addShow(),
+            'destroy'=>$this->addDestroy(),
+        ];
+    }
+
     /**
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @return \Illuminate\Config\Repository|mixed|string
      */
-    public function getQuery()
+    public function getAvatarAttribute()
     {
-
-        return parent::query();
+        return AvatarProcessor::get($this);
     }
 
-    public function getSources()
+    /**
+     * @return \Illuminate\Config\Repository|mixed|string
+     */
+    public function getCoverAttribute()
     {
-        if (!$this->source) {
-            $this->source = $this->query();
-        }
-        return $this->source;
+        return AvatarProcessor::get($this);
     }
 
-    public function findById($id, $columns = ['*'])
-    {
-
-        $result = $this->where([
-            'id' => $id
-        ])->first($columns);
-
-        if ($result) {
-
-            return $result;
-        }
-        return FALSE;
-    }
-
-    public function findByIdQuery($id, $columns = ['*'])
-    {
-
-        $result = $this->where([
-            'id' => $id
-        ])->select($columns);
-
-        if ($result) {
-
-            return $result;
-        }
-        return FALSE;
-    }
-    public function findAll($columns = ['*'])
-    {
-        return parent::all($columns);
-    }
-
-    public function findBy($where, $columns =["*"])
-    {
-
-        $result = $this->select($columns)->where($where);
-
-        if ($result) {
-            /**
-             * @var $result Builder
-             */
-            return $result;
-        }
-        return FALSE;
-    }
 
     public function addIndex($params=[]){
 

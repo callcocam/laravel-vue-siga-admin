@@ -6,6 +6,7 @@
  */
 namespace SIGA\Tenant;
 
+use Ramsey\Uuid\Uuid;
 use SIGA\Tenant\Exceptions\ModelNotFoundForTenantException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -34,6 +35,9 @@ trait BelongsToTenants
 
         // Add tenantColumns automatically when creating models
         static::creating(function (Model $model) {
+
+            $model->setAttribute($model->getKeyName(), Uuid::uuid4());
+
             static::$landlord->newModel($model);
         });
     }

@@ -6,7 +6,6 @@
  */
 namespace SIGA\Acl\Models;
 
-use SIGA\TraitModel;
 use SIGA\TraitTable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -15,7 +14,7 @@ use SIGA\Acl\Contracts\Permission as PermissionContract;
 
 class Permission extends Model implements PermissionContract
 {
-    use RefreshesPermissionCache, TraitModel,TraitTable;
+    use RefreshesPermissionCache,TraitTable;
     public $incrementing = false;
 
     protected $keyType = "string";

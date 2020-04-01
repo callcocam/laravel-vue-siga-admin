@@ -1,15 +1,19 @@
 <?php
-
+/**
+ * Created by Claudio Campos.
+ * User: callcocam@gmail.com
+ * https://www.sigasmart.com.br
+ */
 
 namespace SIGA\Http\Controllers\API\Auth;
 
 
-use SIGA\Http\Requests\ProfileRequest;
+use SIGA\Http\Requests\LoginRequest;
 
 class LoginController extends AbstractController
 {
 
-    public function __invoke(ProfileRequest $profileRequest)
+    public function __invoke(LoginRequest $profileRequest)
     {
         $credentials = $profileRequest->only('email', 'password');
 

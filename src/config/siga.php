@@ -91,6 +91,11 @@ return [
                     ]
                 ]
             ]
+        ],
+        'eloquent'=>[
+            'filter'=>[
+                'default_date'=>'created_at'
+            ]
         ]
     ],
     "image"=>[

@@ -15,8 +15,11 @@ class Company extends Model
 
     protected $keyType = "string";
 
-    use TraitModel, TraitTable;
+    use  TraitTable;
 
+    protected $fillable = [
+        'id','company_id', 'user_id','name', 'email', 'phone', 'document','updated_at',
+    ];
     public function init($tableView)
     {
        // $tableView->column('id')->format('hidden');

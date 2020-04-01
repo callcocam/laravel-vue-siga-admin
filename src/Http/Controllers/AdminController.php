@@ -1,9 +1,13 @@
 <?php
+/**
+ * Created by Claudio Campos.
+ * User: callcocam@gmail.com
+ * https://www.sigasmart.com.br
+ */
 
 namespace SIGA\Http\Controllers;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use SIGA\User;
 
 class AdminController extends Controller

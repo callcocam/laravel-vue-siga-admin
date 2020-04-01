@@ -6,7 +6,6 @@
  */
 namespace SIGA\Acl\Models;
 
-use SIGA\TraitModel;
 use SIGA\TraitTable;
 use Illuminate\Database\Eloquent\Model;
 use SIGA\Acl\Concerns\HasPermissions;
@@ -15,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Role extends Model implements RoleContract
 {
-    use HasPermissions, TraitModel,TraitTable;
+    use HasPermissions,TraitTable;
 
     public $incrementing = false;
 

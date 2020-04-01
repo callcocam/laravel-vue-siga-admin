@@ -58,7 +58,7 @@ class TenantServiceProvider extends ServiceProvider
             Tenant::addTenant("company_id", $tenant);
 
         } catch (\Throwable $th) {
-            //throw $th;
+            throw $th;
         }
     }
 
