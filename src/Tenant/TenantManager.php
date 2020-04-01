@@ -1,9 +1,13 @@
 <?php
+/**
+ * Created by Claudio Campos.
+ * User: callcocam@gmail.com, contato@sigasmart.com.br
+ * https://www.sigasmart.com.br
+ */
+namespace SIGA\Tenant;
 
-namespace App\Tenant;
-
-use App\Tenant\Exceptions\TenantColumnUnknownException;
-use App\Tenant\Exceptions\TenantNullIdException;
+use SIGA\Tenant\Exceptions\TenantColumnUnknownException;
+use SIGA\Tenant\Exceptions\TenantNullIdException;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;

@@ -5,13 +5,13 @@
  * https://www.sigasmart.com.br
  */
 
-namespace App\Suports\Shinobi;
+namespace SIGA\Acl;
 
-use App\Suports\Shinobi\Tactics\AssignRoleTo;
-use App\Suports\Shinobi\Tactics\GivePermissionTo;
-use App\Suports\Shinobi\Tactics\RevokePermissionFrom;
+use SIGA\Acl\Tactics\AssignRoleTo;
+use SIGA\Acl\Tactics\GivePermissionTo;
+use SIGA\Acl\Tactics\RevokePermissionFrom;
 
-class Shinobi
+class Acl
 {
     /**
      * Fetch an instance of the Role model.
@@ -21,7 +21,7 @@ class Shinobi
      */
     public function role()
     {
-        return app()->make(config('shinobi.models.role'));
+        return app()->make(config('acl.models.role'));
     }
 
     /**
@@ -32,7 +32,7 @@ class Shinobi
      */
     public function permission()
     {
-        return app()->make(config('shinobi.models.permission'));
+        return app()->make(config('acl.models.permission'));
     }
 
     /**

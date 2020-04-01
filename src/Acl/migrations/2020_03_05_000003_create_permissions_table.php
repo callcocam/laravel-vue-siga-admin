@@ -12,7 +12,7 @@ class CreatePermissionsTable extends Migration
      */
     public function up()
     {
-        $name = config('shinobi.tables.permissions');
+        $name = config('shinobi.tables.permissions','permissions');
 
         Schema::create($name, function (Blueprint $table) {
             $table->myId();
@@ -36,7 +36,7 @@ class CreatePermissionsTable extends Migration
      */
     public function down()
     {
-        $name = config('shinobi.tables.permissions');
+        $name = config('shinobi.tables.permissions','permissions');
 
         Schema::drop($name);
     }

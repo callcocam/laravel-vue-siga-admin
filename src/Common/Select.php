@@ -6,11 +6,11 @@
  * https://www.sigasmart.com.br
  */
 
-namespace App\Suports\Common;
+namespace SIGA\Common;
 
-use App\Company;
-use App\User;
-use App\File;
+use SIGA\Company;
+use SIGA\User;
+use SIGA\File;
 use Illuminate\Database\Query\Builder;
 
 trait Select
@@ -133,11 +133,11 @@ trait Select
     public function addIndex($params=[]){
 
         return array_merge([
-            'api' => route(sprintf(config('table.admin.index.route','admin.%s.index'), $this->endpoint), request()->query()),
+            'api' => route(sprintf(config('table.admin.index.route','admin.%s.index'), $this->getTable()), request()->query()),
             'query' => request()->query(),
-            'name' => sprintf(config('table.admin.index.route','admin.%s.index'), $this->endpoint),
+            'name' => sprintf(config('table.admin.index.route','admin.%s.index'), $this->getTable()),
             'object' => [
-                'name' => sprintf(config('table.admin.index.route','admin.%s.index'), $this->endpoint),
+                'name' => sprintf(config('table.admin.index.route','admin.%s.index'), $this->getTable()),
                 'query' => request()->query(),
             ],
             'icon' => config('table.admin.index.icon',"ListIcon"),

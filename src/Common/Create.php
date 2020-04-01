@@ -6,7 +6,7 @@
  * https://www.sigasmart.com.br
  */
 
-namespace App\Suports\Common;
+namespace SIGA\Common;
 
 
 trait Create
@@ -17,11 +17,6 @@ trait Create
     public function createBy(&$input)
     {
         array_push($this->fillable,'company_id','uuid','created_at','updated_at');
-
-        $this->results['type'] = Options::MESSAGE_TYPE_ERROR;
-        $this->results['result'] = false;
-        $this->results['title'] = Options::DEFAULT_MESSAGE_TITLE;
-        $this->results['table'] = $this->table;
 
         unset($input['id']);
 
@@ -41,35 +36,30 @@ trait Create
         } catch (\Illuminate\Database\QueryException $e) {
 
             $this->messages = $e->getMessage();
-            dd($this->messages);
+
             if ($this->errorsKeysCreate) {
 
                 foreach ($this->errorsKeysCreate as $key => $value) {
 
                     if (\Str::contains($e->getMessage(), $key)) {
 
-                        $this->messages  = $value;
+                        $this->messages[]  = $value;
 
                     }
                 }
             }
-            return false;
+            return $this->setMessages(false,'create');
         }
 
         if (!$this->model) :
 
             //$this->messages =  "Falhou, não foi possivel caastrar o registro!!";
 
-            return false;
+            return $this->setMessages(false,'create');
 
         endif;
-        $this->lastId = $this->model->id;
+        $this->lastId = $this->getKey();
         $input = array_merge($input, $this->model->toArray());
-       // $message = sprintf( 'Realizada com sucesso, registro [ %s ] foi cadastrado!!', isset($input[Options::DEFAULT_COLUMN_SLUG_ORIGEM])?$input[Options::DEFAULT_COLUMN_SLUG_ORIGEM]:$this->lastId);
-        $message = "Sucesso! O registro foi cadastrado!";
-        $this->results['type'] = Options::MESSAGE_TYPE_SUCCESS;
-        $this->results['result'] = true;
-        $this->messages =  $message;
-        return true;
+        return $this->setMessages(false,'create');
     }
 }

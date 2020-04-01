@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace SIGA\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -13,7 +13,7 @@ class UserRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**

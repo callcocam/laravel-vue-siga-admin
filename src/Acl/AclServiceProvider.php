@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Contracts\Auth\Access\Authorizable;
 
-class ShinobiServiceProvider extends ServiceProvider
+class AclServiceProvider extends ServiceProvider
 {
     /**
      * Boot the service provider.
@@ -38,10 +38,10 @@ class ShinobiServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(
-            __DIR__.'/config/shinobi.php', 'shinobi'
+            __DIR__.'/config/acl.php', 'acl'
         );
 
-        $this->app->singleton('shinobi', function ($app) {
+        $this->app->singleton('acl', function ($app) {
             $auth = $app->make('Illuminate\Contracts\Auth\Guard');
 
             return new \SIGA\Acl();
@@ -94,7 +94,7 @@ class ShinobiServiceProvider extends ServiceProvider
     protected function publishConfig()
     {
         $this->publishes([
-            __DIR__.'/config/shinobi.php' => config_path('shinobi.php'),
+            __DIR__.'/config/acl.php' => config_path('acl.php'),
         ], 'config');
     }
 
@@ -117,7 +117,7 @@ class ShinobiServiceProvider extends ServiceProvider
      */
     protected function loadMigrations()
     {
-        if (config('shinobi.migrate', true)) {
+        if (config('acl.migrate', true)) {
             $this->loadMigrationsFrom(__DIR__.'/../migrations');
         }
     }

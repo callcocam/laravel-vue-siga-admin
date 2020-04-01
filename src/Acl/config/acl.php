@@ -31,12 +31,12 @@ return [
         'length' => 60 * 60 * 24,
 
         /**
-         * When using a cache driver that supports tags, we'll tag the shinobi
+         * When using a cache driver that supports tags, we'll tag the acl
          * cache with this tag. This is useful for busting only the cache
          * responsible for storing permissions and not anything else.
          */
 
-        'tag' => 'shinobi',
+        'tag' => 'acl',
 
     ],
 

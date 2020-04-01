@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Suports\Shinobi\Facades;
+namespace SIGA\Acl\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class Shinobi extends Facade
+class Acl extends Facade
 {
     /**
      * Get the registered name of the component.

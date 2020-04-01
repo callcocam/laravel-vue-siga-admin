@@ -12,7 +12,7 @@ class CreatePermissionRoleTable extends Migration
      */
     public function up()
     {
-        $name = config('shinobi.tables.permission_role');
+        $name = config('shinobi.tables.permission_role','permission_role');
 
         Schema::create($name, function (Blueprint $table) {
             $table->uuid('permission_id')->index();
@@ -30,7 +30,7 @@ class CreatePermissionRoleTable extends Migration
      */
     public function down()
     {
-        $name = config('shinobi.tables.permission_role');
+        $name = config('shinobi.tables.permission_role','permission_role');
 
         Schema::drop($name);
     }

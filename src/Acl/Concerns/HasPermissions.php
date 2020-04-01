@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Suports\Shinobi\Concerns;
+namespace SIGA\Acl\Concerns;
 
 use Illuminate\Support\Arr;
-use App\Suports\Shinobi\Facades\Shinobi;
-use App\Suports\Shinobi\Contracts\Permission;
+use SIGA\Acl\Facades\Acl;
+use SIGA\Acl\Contracts\Permission;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use App\Suports\Shinobi\Exceptions\PermissionNotFoundException;
+use SIGA\Acl\Exceptions\PermissionNotFoundException;
 
 trait HasPermissions
 {
@@ -17,14 +17,14 @@ trait HasPermissions
      */
     public function permissions(): BelongsToMany
     {
-        return $this->belongsToMany(config('shinobi.models.permission'))->withTimestamps();
+        return $this->belongsToMany(config('acl.models.permission'))->withTimestamps();
     }
 
     /**
      * The mothergoose check. Runs through each scenario provided
      * by Shinobi - checking for special flags, role permissions, and
      * individual user permissions; in that order.
-     * 
+     *
      * @param  Permission|String  $permission
      * @return boolean
      */
@@ -38,7 +38,7 @@ trait HasPermissions
         if ((method_exists($this, 'hasPermissionFlags') and $this->hasPermissionFlags())) {
             return $this->hasPermissionThroughFlag();
         }
-        
+
         // Fetch permission if we pass through a string
         if (is_string($permission)) {
             $permission = $this->getPermissionModel()->where('name', $permission)->first();
@@ -47,12 +47,12 @@ trait HasPermissions
                 throw new PermissionNotFoundException;
             }
         }
-        
+
         // Check role permissions
         if (method_exists($this, 'hasPermissionThroughRole') and $this->hasPermissionThroughRole($permission)) {
             return true;
         }
-        
+
         // Check user permission
         if ($this->hasPermission($permission)) {
             return true;
@@ -60,15 +60,15 @@ trait HasPermissions
 
         return false;
     }
-    
+
     /**
      * Give the specified permissions to the model.
-     * 
+     *
      * @param  array  $permissions
      * @return self
      */
     public function givePermissionTo(...$permissions): self
-    {        
+    {
         $permissions = Arr::flatten($permissions);
         $permissions = $this->getPermissions($permissions);
 
@@ -83,7 +83,7 @@ trait HasPermissions
 
     /**
      * Revoke the specified permissions from the model.
-     * 
+     *
      * @param  array  $permissions
      * @return self
      */
@@ -99,7 +99,7 @@ trait HasPermissions
 
     /**
      * Sync the specified permissions against the model.
-     * 
+     *
      * @param  array  $permissions
      * @return self
      */
@@ -115,7 +115,7 @@ trait HasPermissions
 
     /**
      * Get the specified permissions.
-     * 
+     *
      * @param  array  $permissions
      * @return Permission
      */
@@ -136,8 +136,8 @@ trait HasPermissions
 
     /**
      * Checks if the user has the given permission assigned.
-     * 
-     * @param  \Caffeinated\Shinobi\Models\Permission  $permission
+     *
+     * @param  \SIGA\Acl\Models\Permission  $permission
      * @return boolean
      */
     protected function hasPermission($permission): bool
@@ -153,21 +153,22 @@ trait HasPermissions
 
     /**
      * Get the model instance responsible for permissions.
-     * 
-     * @return \App\Suports\Shinobi\Contracts\Permission|\Illuminate\Database\Eloquent\Collection
+     *
+     * @return \SIGA\Acl\Contracts\Permission|\Illuminate\Database\Eloquent\Collection
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     protected function getPermissionModel()
     {
-        if (config('shinobi.cache.enabled')) {
-            return cache()->tags(config('shinobi.cache.tag'))->remember(
+        if (config('acl.cache.enabled')) {
+            return cache()->tags(config('acl.cache.tag'))->remember(
                 'permissions',
-                config('shinobi.cache.length'),
+                config('acl.cache.length'),
                 function() {
-                    return app()->make(config('shinobi.models.permission'))->get();
+                    return app()->make(config('acl.models.permission'))->get();
                 }
             );
         }
 
-        return app()->make(config('shinobi.models.permission'));
+        return app()->make(config('acl.models.permission'));
     }
 }

@@ -4,7 +4,7 @@
  * User: callcocam@gmail.com
  * https://www.sigasmart.com.br
  */
-namespace App\Suports\Common;
+namespace SIGA\Common;
 
 
 use Illuminate\Database\Query\Builder;

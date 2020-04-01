@@ -14,6 +14,34 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::prefix('v1')
+    ->namespace('API\\Auth')
+    ->group( function ($router) {
+
+        $router->prefix('admin')->group( function ($router) {
+            $router->post('login', 'LoginController')->name('api.admin.login');
+            $router->post('register', 'RegisterController@register')->name('api.admin.register');
+            $router->post('refresh', 'RefreshController@refresh')->name('api.admin.refresh');
+            $router->post('logout', 'LogoutController@logout')->name('api.admin.logout');
+            $router->get('me', 'MeController@me')->name('api.admin.me');
+            $router->post('profile', 'ProfileController@save')->name('api.admin.profile');
+            $router->post('reset-password', 'ResetLinkController@resetPassword')->name('api.admin.reset.password.email');
+            $router->post('reset/password', 'ResetPasswordController@resetPassword')->name('api.admin.reset.password');
+        });
+
+    });
+
+Route::prefix('v1')
+    ->middleware('auth:api')
+    ->namespace('API')
+    ->group( function ($router) {
+
+        $router->prefix('admin')->group( function ($router) {
+            \SIGA\AutoRoute::resources("users","UserController","users");
+            \SIGA\AutoRoute::resources("companies","CompanyController","companies");
+            \SIGA\AutoRoute::resources("users","UserController","users");
+            \SIGA\AutoRoute::resources("roles","RoleController","roles");
+            \SIGA\AutoRoute::resources("permissions","PermissionController","permissions");
+        });
+
+    });

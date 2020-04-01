@@ -1,10 +1,10 @@
 <?php
 
 
-namespace App\Suports\Shinobi;
+namespace SIGA\Acl;
 
 
-use App\Suports\Shinobi\Models\Permission;
+use SIGA\Acl\Models\Permission;
 use Illuminate\Support\Str;
 
 class Helper
@@ -65,9 +65,6 @@ class Helper
 
             endif;
         }
-
-
-
     }
 
     public function getPermissions($current){

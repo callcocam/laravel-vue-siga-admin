@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Suports\Shinobi\Tactics;
+namespace SIGA\Acl\Tactics;
 
 use Illuminate\Support\Arr;
 use Illuminate\Database\Eloquent\Model;
-use App\Suports\Shinobi\Facades\Shinobi;
+use SIGA\Acl\Facades\Acl;
 
 class GivePermissionTo
 {
@@ -15,7 +15,7 @@ class GivePermissionTo
 
     /**
      * Create a new GivePermissionTo instance.
-     * 
+     *
      * @param  array  $permissions
      */
     public function __construct(...$permissions)
@@ -25,7 +25,7 @@ class GivePermissionTo
 
     /**
      * Give the permissions to the given user or role.
-     * 
+     *
      * @param  Role|User  $roleOrUser
      */
     public function to($roleOrUser)
@@ -33,7 +33,7 @@ class GivePermissionTo
         if ($roleOrUser instanceof Model) {
             $instance = $roleOrUser;
         } else {
-            $instance = Shinobi::role()->where('slug', $roleOrUser)->firstOrFail();
+            $instance = Acl::role()->where('slug', $roleOrUser)->firstOrFail();
         }
 
         $instance->givePermissionTo($this->permissions);

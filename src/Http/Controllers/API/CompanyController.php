@@ -4,13 +4,13 @@ namespace SIGA\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use SIGA\Company;
 use SIGA\Http\Requests\UserRequest;
-use SIGA\User;
 
-class UserController extends AbstractController
+class CompanyController extends AbstractController
 {
 
-    protected $model = User::class;
+    protected $model = Company::class;
 
 
     public function store(UserRequest $request)

@@ -6,41 +6,32 @@
  * https://www.sigasmart.com.br
  */
 
-namespace App\Suports\Common;
+namespace SIGA\Common;
 
 
+
+use SIGA\TraitModel;
 
 trait Delete
 {
     public function deleteBy($model)
     {
-
-           if ($model) {
+        /**
+         * @var TraitModel $model
+         */
+        if ($model) {
             if ($model->delete()) {
-                $this->results['title'] = 'Operação:';
-                $this->results['result'] = true;
-                $this->results['table'] = $this->table;
-                $this->results['type'] = 'is-danger';
-                //$this->messages = sprintf("Realizada com sucesso, registro - %s - foi excluido com sucesso!!", $model->id);
-                $this->messages = "Sucesso! O registro foi excluido!!";
-
-                return true;
+                return $this->setMessages(true,'destroy');
             }
         }
-        $this->results['title'] = 'Operação:';
-        $this->results['result'] = false;
-        $this->results['table'] = $this->table;
-        $this->results['type'] = 'is-danger';
-        $this->messages = sprintf("Falhou, não foi possivel encontrar o registro - %s!!", $model->id);
-
-        return false;
+        return $this->setMessages(false,'destroy');
     }
 
 
     public function deleteAll($data)
     {
         /**
-         * @var AbstractModel
+         * @var TraitModel $model
          */
         $model = $this->query()->whereIn('id', $data);
 
@@ -48,33 +39,45 @@ trait Delete
             $this->results = [
                 'model' => $model->delete()
             ];
-            $this->messages = "Realizada com sucesso, registros foram excluido com sucesso!!";
-            return true;
+            return $this->setMessages(true,'destroy');
         }
 
-        $this->results = [
-            'tabla' => $this->table,
-        ];
-        $this->messages = "Falhou, não foi possivel encontrar o(s) registro(s)!!";
-        return false;
+        return $this->setMessages(false,'destroy');
     }
 
-    public function addDestroy($record,$params=[]){
+    public function addDestroy($params=[]){
 
         return array_merge([
-            'api' => route(sprintf(config('table.admin.destroy.route',"admin.%s.destroy"), $this->endpoint), array_merge([$this->alias=>$record['id']], request()->query())),
-            'name' => sprintf('admin.%s.destroy', $this->endpoint),
-            'id' => $record['id'],
+            'api' => route(sprintf(config('siga.table.admin.destroy.route',"admin.%s.destroy"), $this->getTable()), array_merge([$this->getKeyName()=>$this->getKey()], request()->query())),
+            'name' => sprintf('admin.%s.destroy', $this->getTable()),
+            'id' => $this->getKey(),
             'object' => [
-                'name' => sprintf(config('table.admin.destroy.route',"admin.%s.destroy"), $this->endpoint),
+                'name' => sprintf(config('siga.table.admin.destroy.route',"admin.%s.destroy"), $this->getTable()),
                 'params'=>[
-                    $this->alias=>$record['id']
+                    $this->getKeyName()=>$this->getKey()
                 ],
                 'query' => request()->query(),
             ],
-            'icon' => config('table.admin.destroy.icon',"Trash2Icon"),
-            'function' => config('table.admin.destroy.function',"confirmDeleteRecord"),
-            'sgClass' => config('table.admin.destroy.class',"h-5 w-5 mr-4 hover:text-primary cursor-pointer"),
+            'icon' => config('siga.table.admin.destroy.icon',"Trash2Icon"),
+            'function' => config('siga.table.admin.destroy.function',"confirmDeleteRecord"),
+            'sgClass' => config('siga.table.admin.destroy.class',"h-5 w-5 mr-4 hover:text-primary cursor-pointer"),
         ], $params);
+    }
+
+    private function messageDestroy($result){
+
+        $this->results['title'] = config('siga.admin.table.destroy.messages.title','Operação:');
+        if($result){
+            $this->results['result'] = $result;
+            $this->results['type'] = config('siga.admin.table.destroy.messages.type.success','success:');
+            $this->results['redirect'] = $this->addIndex();
+            $this->results['messages'] =  config('siga.admin.table.destroy.messages.success',"Realizada com sucesso, registro foi excluido com sucesso!!");
+            return $result;
+        }
+
+        $this->results['result'] = $result;
+        $this->results['type'] = config('siga.admin.table.destroy.messages.type.success','danger:');
+        $this->results['messages'] =  sprintf(config('siga.admin.table.destroy.messages.message',"Falhou, não foi possivel encontrar o registro - %s!!"), $this->getKey());
+        return $result;
     }
 }

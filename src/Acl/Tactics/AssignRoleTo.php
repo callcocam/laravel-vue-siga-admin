@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Suports\Shinobi\Tactics;
+namespace SIGA\Acl\Tactics;
 
 use Illuminate\Support\Arr;
 
@@ -13,7 +13,7 @@ class AssignRoleTo
 
     /**
      * Create a new AssignRoleTo instance.
-     * 
+     *
      * @param  array  $roles
      */
     public function __construct(...$roles)

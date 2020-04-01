@@ -6,7 +6,7 @@ namespace SIGA\Http\Controllers\API\Auth;
 
 use SIGA\Http\Requests\ProfileRequest;
 
-class LoginController extends AbstractController
+class RefreshTokenController extends AbstractController
 {
 
     public function __invoke(ProfileRequest $profileRequest)

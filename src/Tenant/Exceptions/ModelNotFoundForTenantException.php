@@ -1,6 +1,10 @@
 <?php
-
-namespace App\Tenant\Exceptions;
+/**
+ * Created by Claudio Campos.
+ * User: callcocam@gmail.com, contato@sigasmart.com.br
+ * https://www.sigasmart.com.br
+ */
+namespace SIGA\Tenant\Exceptions;
 
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 

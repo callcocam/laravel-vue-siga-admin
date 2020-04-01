@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Suports\Shinobi\Exceptions;
+namespace SIGA\Acl\Exceptions;
 
 use Exception;
 
 class PermissionNotFoundException extends Exception
 {
-    // 
+    //
 }

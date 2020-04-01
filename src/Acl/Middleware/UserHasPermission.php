@@ -1,6 +1,6 @@
 <?php
-namespace App\Suports\Shinobi\Middleware;
-use Caffeinated\Shinobi\Models\Role;
+namespace SIGA\Acl\Middleware;
+use SIGA\Acl\Models\Role;
 use Closure;
 use Illuminate\Contracts\Auth\Guard;
 class UserHasPermission

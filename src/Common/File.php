@@ -5,7 +5,7 @@
  * https://www.sigasmart.com.br
  */
 
-namespace App\Suports\Common;
+namespace SIGA\Common;
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Str;
@@ -97,23 +97,23 @@ trait File {
 		$original = explode('.', $UploadedFile->getClientOriginalName());
 
 		$name = sprintf("%s-%s-%s.%s", rand(),time(),Str::slug(reset($original)), $extension);
-		
+
 		$path_upload = str_replace("|",DIRECTORY_SEPARATOR,sprintf("%s|%s|%s",  env('APP_PATH_UPLOAD', 'dist|uploads|files'),get_tenant_id(),$date));
-		
+
 		if ($this->use_user_id) {
-			
+
 			if(\Auth::id()){
-			
+
 				$path_upload = str_replace("|",DIRECTORY_SEPARATOR,sprintf("%s|%s|%s|%s",  env('APP_PATH_UPLOAD', 'dist|uploads|files'),get_tenant_id(),\Auth::id(),$date));
 
 			}
-			
+
 		}
-		
+
 		$path_dest = public_path($path_upload);
 
 		$file_name = str_replace([DIRECTORY_SEPARATOR,'//'],["/",'/'],sprintf("/%s/%s", $path_upload, $name));
-		
+
 		$UploadedFile->move($path_dest, $name);
 
 		if (is_file(sprintf("%s/%s", $path_dest, $name))):
@@ -131,6 +131,6 @@ trait File {
 
 	public function saveUpload($data){
 
-		
+
 	}
 }

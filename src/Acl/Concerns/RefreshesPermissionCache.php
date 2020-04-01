@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Suports\Shinobi\Concerns;
+namespace SIGA\Acl\Concerns;
 
 trait RefreshesPermissionCache
 {

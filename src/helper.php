@@ -12,3 +12,14 @@ if (!function_exists('siga_path')){
         return sprintf("%s/%s",__DIR__, $path);
     }
 }
+
+if (! function_exists('tableView')) {
+    /**
+     * @param \Illuminate\Support\Collection|\Illuminate\Database\Eloquent\Builder $data
+     * @return \SIGA\TableView\TableView
+     */
+    function tableView($data)
+    {
+        return new SIGA\TableView\TableView($data);
+    }
+}

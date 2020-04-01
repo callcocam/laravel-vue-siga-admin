@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Suports\Shinobi\Contracts;
+namespace SIGA\Acl\Contracts;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -9,7 +9,7 @@ interface Permission
     /**
      * Permissions can belong to many roles.
      *
-     * @return Model
+     * @return BelongsToMany
      */
     public function roles(): BelongsToMany;
 }

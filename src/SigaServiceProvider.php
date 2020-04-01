@@ -7,8 +7,10 @@
 namespace SIGA;
 
 use Illuminate\Support\ServiceProvider;
+use SIGA\Acl\AclServiceProvider;
 use SIGA\Providers\MacrosServiceProvider;
 use SIGA\Providers\SigaRouteServiceProvider;
+use SIGA\TableView\TableViewServiceProvider;
 
 class SigaServiceProvider extends ServiceProvider
 {
@@ -20,6 +22,9 @@ class SigaServiceProvider extends ServiceProvider
     public function register()
     {
 
+        $this->app->register(AutoRouteServiceProvider::class);
+        $this->app->register(AclServiceProvider::class);
+        $this->app->register(TableViewServiceProvider::class);
         $this->app->register(MacrosServiceProvider::class);
 
         $this->app->register(SigaRouteServiceProvider::class);
@@ -29,7 +34,6 @@ class SigaServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(siga_path('database/migrations'));
 
         $this->loadViewsFrom(siga_path('resources/views/callcocam/siga'),'siga');
-
 
     }
     /**

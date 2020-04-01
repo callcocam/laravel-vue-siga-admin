@@ -12,7 +12,7 @@ class CreateRolesTable extends Migration
      */
     public function up()
     {
-        $name = config('shinobi.tables.roles');
+        $name = config('shinobi.tables.roles','roles');
 
         Schema::create($name, function (Blueprint $table) {
             $table->myId();
@@ -37,7 +37,7 @@ class CreateRolesTable extends Migration
      */
     public function down()
     {
-        $name = config('shinobi.tables.roles');
+        $name = config('shinobi.tables.roles','roles');
 
         Schema::drop($name);
     }

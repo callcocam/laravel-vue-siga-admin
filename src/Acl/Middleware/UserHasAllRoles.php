@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Suports\Shinobi\Middleware;
+namespace SIGA\Acl\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Guard;

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Suports\Shinobi\Concerns;
+namespace SIGA\Acl\Concerns;
 
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use App\Suports\Shinobi\Contracts\Role;
+use SIGA\Acl\Contracts\Role;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 trait HasRoles
@@ -16,12 +16,12 @@ trait HasRoles
      */
     public function roles(): BelongsToMany
     {
-        return $this->belongsToMany(config('shinobi.models.role'))->withTimestamps();
+        return $this->belongsToMany(config('acl.models.role'))->withTimestamps();
     }
 
     /**
      * Checks if the model has the given role assigned.
-     * 
+     *
      * @param  string  $role
      * @return boolean
      */
@@ -34,7 +34,7 @@ trait HasRoles
 
     /**
      * Checks if the model has any of the given roles assigned.
-     * 
+     *
      * @param  array  $roles
      * @return bool
      */
@@ -51,7 +51,7 @@ trait HasRoles
 
     /**
      * Checks if the model has all of the given roles assigned.
-     * 
+     *
      * @param  array  $roles
      * @return bool
      */
@@ -73,7 +73,7 @@ trait HasRoles
 
     /**
      * Assign the specified roles to the model.
-     * 
+     *
      * @param  mixed  $roles,...
      * @return self
      */
@@ -93,7 +93,7 @@ trait HasRoles
 
     /**
      * Remove the specified roles from the model.
-     * 
+     *
      * @param  mixed  $roles,...
      * @return self
      */
@@ -109,7 +109,7 @@ trait HasRoles
 
     /**
      * Sync the specified roles to the model.
-     * 
+     *
      * @param  mixed  $roles,...
      * @return self
      */
@@ -125,7 +125,7 @@ trait HasRoles
 
     /**
      * Get the specified roles.
-     * 
+     *
      * @param  array  $roles
      * @return Role
      */
@@ -158,11 +158,11 @@ trait HasRoles
 
     /**
      * Get the model instance responsible for permissions.
-     * 
-     * @return \App\Suports\Shinobi\Contracts\Role
+     *
+     * @return \SIGA\Acl\Contracts\Role
      */
     protected function getRoleModel(): Role
     {
-        return app()->make(config('shinobi.models.role'));
+        return app()->make(config('acl.models.role'));
     }
 }

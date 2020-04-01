@@ -1,32 +1,20 @@
 <?php
 
-namespace SIGA\Http\Controllers;
+namespace SIGA\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use SIGA\Http\Requests\UserRequest;
 use SIGA\User;
 
-class AdminController extends Controller
+class UserController extends AbstractController
 {
 
     protected $model = User::class;
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function index()
+
+
+    public function store(UserRequest $request)
     {
-        $tableView = app($this->model)->render();
-
-        return response()->json($tableView);
-    }
-
-    public function  show($id){
-
-        $tableView = app($this->model)->render($id);
-
-        return response()->json($tableView);
-
+       return parent::save($request);
     }
 }

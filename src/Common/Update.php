@@ -6,11 +6,7 @@
  * https://www.sigasmart.com.br
  */
 
-namespace App\Suports\Common;
-
-
-
-use App\TraitModel;
+namespace SIGA\Common;
 
 trait Update
 {
@@ -71,43 +67,50 @@ trait Update
 
     }
 
-    public function addEdit($record,$params=[]){
-
-        return array_merge([
-            'api' => route(sprintf(config('table.admin.edit.route','admin.%s.edit'), $this->endpoint), array_merge([$this->alias=>$record['id']], request()->query())),
-            'query' => request()->query(),
-            'name' => sprintf(config('table.admin.edit.route','admin.%s.edit'), $this->endpoint),
-            'object' => [
-                'name' => sprintf(config('table.admin.edit.route','admin.%s.edit'), $this->endpoint),
-                'params'=>[
-                    $this->alias=>$record['id']
-                ],
+    public function addEdit($params=[]){
+        try{
+            return array_merge([
+                'api' => route(sprintf(config('siga.table.admin.edit.route','admin.%s.edit'), $this->getTable()), array_merge([$this->getKeyName()=>$this->getKey()], request()->query())),
                 'query' => request()->query(),
-            ],
-            'id' => $record['id'],
-            'icon' => config('table.admin.edit.icon',"Edit3Icon"),
-            'function' =>config('table.admin.edit.function',"editRecord"),
-            'sgClass' => config('table.admin.edit.class',"h-5 w-5 mr-4 hover:text-primary cursor-pointer"),
-        ], $params);
+                'name' => sprintf(config('siga.table.admin.edit.route','admin.%s.edit'), $this->getTable()),
+                'object' => [
+                    'name' => sprintf(config('siga.table.admin.edit.route','admin.%s.edit'), $this->getTable()),
+                    'params'=>[
+                        $this->getKeyName()=>$this->getKey()
+                    ],
+                    'query' => request()->query(),
+                ],
+                'id' => $this->getKey(),
+                'icon' => config('siga.table.admin.edit.icon',"Edit3Icon"),
+                'function' =>config('siga.table.admin.edit.function',"editRecord"),
+                'sgClass' => config('siga.table.admin.edit.class',"h-5 w-5 mr-4 hover:text-primary cursor-pointer"),
+            ], $params);
+        }catch (\Exception $exception){
+            return [];
+        }
+
     }
 
 
-    public function addShow($record,$params=[]){
-
-        return array_merge([
-            'api' => route(sprintf(config('table.admin.show.route','admin.%s.show'), $this->endpoint), array_merge([$this->alias=>$record['id']], request()->all())),
-            'name' => sprintf(config('table.admin.show.route','admin.%s.show'), $this->endpoint),
-            'id' => $record['id'],
-            'object' => [
-                'name' => sprintf(config('table.admin.show.route','admin.%s.show'), $this->endpoint),
-                'params'=>[
-                    $this->alias=>$record['id']
+    public function addShow($params=[]){
+        try{
+            return array_merge([
+                'api' => route(sprintf(config('siga.table.admin.show.route','admin.%s.show'), $this->getTable()), array_merge([$this->getKeyName()=>$this->getKey()], request()->all())),
+                'name' => sprintf(config('siga.table.admin.show.route','admin.%s.show'), $this->getTable()),
+                'id' => $this->getKey(),
+                'object' => [
+                    'name' => sprintf(config('siga.table.admin.show.route','admin.%s.show'), $this->getTable()),
+                    'params'=>[
+                        $this->getKeyName()=>$this->getKey()
+                    ],
+                    'query' => request()->query(),
                 ],
-                'query' => request()->query(),
-            ],
-            'icon' =>config('table.admin.show.icon',"EyeIcon"),
-            'function' => config('table.admin.show.function',"showRecord"),
-            'sgClass' => config('table.admin.show.class',"h-5 w-5 mr-4 hover:text-primary cursor-pointer"),
-        ], $params);
+                'icon' =>config('siga.table.admin.show.icon',"EyeIcon"),
+                'function' => config('siga.table.admin.show.function',"showRecord"),
+                'sgClass' => config('siga.table.admin.show.class',"h-5 w-5 mr-4 hover:text-primary cursor-pointer"),
+            ], $params);
+        }catch (\Exception $exception){
+            return [];
+        }
     }
 }

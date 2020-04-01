@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Processors;
+namespace SIGA\Processors;
 
 
 use Illuminate\Support\Str;

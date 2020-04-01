@@ -6,7 +6,7 @@
  * https://www.sigasmart.com.br
  */
 
-namespace App\Suports\Common;
+namespace SIGA\Common;
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;

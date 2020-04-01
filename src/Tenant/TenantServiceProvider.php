@@ -1,10 +1,12 @@
 <?php
+/**
+ * Created by Claudio Campos.
+ * User: callcocam@gmail.com, contato@sigasmart.com.br
+ * https://www.sigasmart.com.br
+ */
+namespace SIGA\Tenant;
 
-namespace App\Tenant;
-
-use App\Company;
-use App\Tenant\Facades\Tenant;
-use Faker\Provider\Text;
+use SIGA\Tenant\Facades\Tenant;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 

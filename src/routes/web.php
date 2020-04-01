@@ -15,7 +15,9 @@ use Illuminate\Support\Facades\Route;
 
 Route::group(['prefix'=>'/admin'], function ($router){
 
+    $router->get('/welcome/user/listar', "API\\UserController@index")->name('siga-admin-welcome-user');
     $router->get('/welcome', "AdminController@index")->name('siga-admin-welcome');
+    $router->get('/welcome/{id}', "AdminController@show")->name('siga-admin-show');
 
     $router->get('/{vue_capture?}', function (){
         return view('siga::layouts.admin');

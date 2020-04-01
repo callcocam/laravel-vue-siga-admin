@@ -12,7 +12,7 @@ class CreateRoleUserTable extends Migration
      */
     public function up()
     {
-        $name = config('shinobi.tables.role_user');
+        $name = config('shinobi.tables.role_user','role_user');
 
         Schema::create($name, function (Blueprint $table) {
             $table->uuid('role_id')->index();
@@ -30,7 +30,7 @@ class CreateRoleUserTable extends Migration
      */
     public function down()
     {
-        $name = config('shinobi.tables.role_user');
+        $name = config('shinobi.tables.role_user','role_user');
 
         Schema::drop($name);
     }

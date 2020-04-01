@@ -1,11 +1,10 @@
 <?php
 
-namespace SIGA\Tenant\Facades;
+namespace SIGA\TableView\Facades;
 
-use SIGA\Tenant\TenantManager;
 use Illuminate\Support\Facades\Facade;
 
-class Tenant extends Facade
+class TableView extends Facade
 {
     /**
      * Get the registered name of the component.
@@ -14,6 +13,6 @@ class Tenant extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return TenantManager::class;
+        return 'tableView';
     }
 }
