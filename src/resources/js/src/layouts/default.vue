@@ -39,7 +39,7 @@
             </div>
         </nav>
         <main class="py-4">
-            {{userData}}
+            {{ userData.name }}
             <router-view/>
         </main>
     </div>

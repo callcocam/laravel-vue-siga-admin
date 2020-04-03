@@ -21,18 +21,8 @@ class LoginController extends AbstractController
         if ($authenticate) {
             // Generate Token
             $token = \JWTAuth::fromUser($this->guard()->user());
-            // Get expiration time
-            $objectToken = \JWTAuth::setToken($token);
 
-            $expiration = \JWTAuth::decode($objectToken->getToken())->get('exp');
-
-            $user = $this->guard()->user();
-
-            $user->append('cover');
-
-            $user->append('address');
-
-            return $this->respondWithToken($token,$user->toArray(), $expiration);
+            return $this->respondWithToken($token);
         }
 
         return response()->json([

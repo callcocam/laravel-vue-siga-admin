@@ -11,7 +11,7 @@ export  default {
 
     UPDATE_USER_INFO( state, payload ){
 
-        state.userInfo =  JSON.stringify(payload)
+        state.userInfo =  payload
 
     },
     SET_USER_INFO( state, payload ){

@@ -2,7 +2,7 @@
 const localStorageKey = 'loggedIn';
 const localStorageInfo = 'userInfo';
 const tokenExpiryKey = 'tokenExpiry';
-const locaStorageToken = 'accessToken';
+const localStorageToken = 'accessToken';
 import store from "@store";
 class AuthService {
     logOut() {
@@ -10,7 +10,7 @@ class AuthService {
         localStorage.removeItem(localStorageKey);
         localStorage.removeItem(tokenExpiryKey);
         localStorage.removeItem(localStorageInfo);
-        localStorage.removeItem(locaStorageToken);
+        localStorage.removeItem(localStorageToken);
 
     }
     isAuthenticated() {
@@ -23,7 +23,7 @@ class AuthService {
 
     setAuthenticated() {
         if (this.isAuthenticated()){
-            store.commit("UPDATE_USER_INFO",localStorage.getItem(localStorageInfo))
+            store.commit("UPDATE_USER_INFO",JSON.parse(localStorage.getItem(localStorageInfo)))
         }
     }
 }

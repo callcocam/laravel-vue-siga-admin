@@ -25,7 +25,10 @@ const router = new Router({
             children: [
                 {
                     path:"dashboard",
-                    component: ()=>import(`@views/admin/index`)
+                    component: ()=>import(`@views/admin/index`),
+                    meta:{
+                        auth:true
+                    }
                 },
                 ...generateRoutes(),
                 {

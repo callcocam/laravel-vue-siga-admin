@@ -14,6 +14,7 @@ class RefreshTokenController extends AbstractController
 
     public function __invoke()
     {
+
         return $this->respondWithToken(JWTAuth::parseToken()->refresh());
     }
 }

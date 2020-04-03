@@ -35,8 +35,10 @@ export  default {
 
     },
 
-    set_isAddRoutes({ commit }, data){
+   async fetchAccessToken({ commit }){
 
-        commit("SET_IS_ROUTES", data)
+     let { data } = await axios.post('/api/v1/admin/refresh');
+
+     return  data;
     }
 }

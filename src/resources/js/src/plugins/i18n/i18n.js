@@ -7,6 +7,7 @@ if(window.locale){
     locale = window.locale;
 }
 Vue.use(VueI18n)
+console.log(i18nData)
 export default new VueI18n({
     locale: locale.replace('-',''), // set default locale
     messages: i18nData,

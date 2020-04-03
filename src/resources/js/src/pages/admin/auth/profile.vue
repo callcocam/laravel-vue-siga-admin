@@ -1,12 +1,18 @@
 <template>
     <div>
-        profile
+        {{userData}}
     </div>
 </template>
 
 <script>
     export default {
-        name: "profile"
+        name: "profile",
+        computed:{
+
+            userData(){
+                return this.$store.getters.userInfo
+            }
+        }
     }
 </script>
 

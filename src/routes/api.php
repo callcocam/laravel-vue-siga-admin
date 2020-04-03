@@ -37,6 +37,7 @@ Route::prefix('v1')
     ->group( function ($router) {
 
         $router->prefix('admin')->group( function ($router) {
+            \SIGA\AutoRoute::get("languages","AdminController","language","admin.languages");
             \SIGA\AutoRoute::resources("users","UserController","users");
             \SIGA\AutoRoute::resources("companies","CompanyController","companies");
             \SIGA\AutoRoute::resources("users","UserController","users");

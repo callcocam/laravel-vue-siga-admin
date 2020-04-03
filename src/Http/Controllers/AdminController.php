@@ -8,6 +8,7 @@
 namespace SIGA\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use Psy\Util\Str;
 
 class AdminController extends Controller
 {
@@ -103,6 +104,8 @@ class AdminController extends Controller
                 ]
             ],
         ];
+
+       
         return view('siga::layouts.admin',[
             "menus"=>json_encode($menus)
         ]);

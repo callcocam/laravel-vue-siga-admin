@@ -3,10 +3,10 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
+import "@/globalconfig"
+
 // i18n
 import i18n from '@/plugins/i18n/i18n'
-
-import "@/globalconfig"
 
 // Globally Registered Components
 import '@/globalComponents.js'

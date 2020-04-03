@@ -13,6 +13,7 @@ use App\User;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AbstractController extends Controller
 {
@@ -62,8 +63,19 @@ class AbstractController extends Controller
      * @param null $expiration
      * @return \Illuminate\Http\JsonResponse
      */
-    protected function respondWithToken($token, $user=null, $expiration=null)
+    protected function respondWithToken($token)
     {
+        // Get expiration time
+        $objectToken = \JWTAuth::setToken($token);
+
+        $expiration = \JWTAuth::decode($objectToken->getToken())->get('exp');
+
+        $user = $this->guard()->user();
+
+        $user->append('cover');
+
+        $user->append('address');
+
         return response()->json([
             'userData' => $user,
             'accessToken' => $token,
