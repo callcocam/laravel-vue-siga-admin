@@ -42,6 +42,7 @@ Route::prefix('v1')
             \SIGA\AutoRoute::resources("users","UserController","users");
             \SIGA\AutoRoute::resources("roles","RoleController","roles");
             \SIGA\AutoRoute::resources("permissions","PermissionController","permissions");
+            \SIGA\AutoRoute::resources("menus","MenuController","menus");
         });
 
     });

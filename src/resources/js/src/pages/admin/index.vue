@@ -1,6 +1,7 @@
+
 <template>
   <div class="admin">
-   Admin
+   Admin authRequired
   </div>
 </template>
 

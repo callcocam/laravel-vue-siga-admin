@@ -4,35 +4,25 @@
  * User: callcocam@gmail.com, contato@sigasmart.com.br
  * https://www.sigasmart.com.br
  */
-
 namespace SIGA;
+
 
 use Illuminate\Database\Eloquent\Model;
 
-class SocialLink extends Model
+class Meta extends Model
 {
-
-    use TraitTable;
-
     public $incrementing = false;
 
     protected $keyType = "string";
 
-    protected $table = "social_links";
+    use  TraitTable;
 
     protected $fillable = [
-        'user_id','twitter','facebook','instagram','github','linkedin','codepen', 'slack','youtub','google','website','created_at','updated_at'
+        'id','company_id', 'user_id','name', 'slug','description','updated_at'
     ];
-
-    public function social_linkable(){
-
-        return $this->morphTo();
-    }
-
-
-    public function init()
+    public function init($tableView)
     {
-        // TODO: Implement init() method.
+       // $tableView->column('id')->format('hidden');
     }
 
     public function initFilter($query)

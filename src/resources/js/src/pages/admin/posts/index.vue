@@ -1,3 +1,9 @@
+<route-meta>
+    {
+    "authRequired": true,
+    "roles": "editor"
+    }
+</route-meta>
 <script>
     // @ is an alias to /src
     import AbstractList from "@views/admin/AbstractList";
@@ -5,7 +11,7 @@
         name: 'admin',
         extends:AbstractList,
         mounted() {
-            this.page = "Users"
+            this.page = "Posts"
         }
     }
 </script>
